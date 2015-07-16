@@ -1,7 +1,5 @@
 # js Binary Schema Parser
 
----
-
 Parse binary files in client javascript using clean schema objects. 
 
 We needed this when building the **[Ruffle][1]** hybrid app, so that we could effectively parse GIF files for manipulation. While this readme describes how to parse binary files in general, our *[GIF Parser][2]* library exhibits a full use of this project (including a *[demo][2]*), which might be further help to anyone looking.
@@ -16,12 +14,12 @@ As we knew our compatibility requirements in advance, this parser expects the in
 
 *Include in your app:*
 
-    <script src="/bower_components/js-binary-schema-parser/dist/js-binar-schema-parser.min.js"></script>
+    <script src="/bower_components/js-binary-schema-parser/dist/js-binary-schema-parser.min.js"></script>
 
 *Create a schema and parse a file:*
 
     // optional included basic parsers
-    var P = BSP.Parsers;
+    var Parsers = BSP.Parsers;
     
     var schema = [
         // part definitions...
@@ -93,7 +91,7 @@ You can see a full example [here][2] of parsing GIF files completely, but here i
 
 ### Why this parser?
 
-There are other good parsers around, like [jBinary], but we weren't a fan of relying on object key ordering, and defining parser types as strings. This parser does only cater to browsers that are able to utilise the `Uint8Array` data type, so if you need something more compatible, these other parsers might better fit your requirements.
+There are other good parsers around, like [jBinary][4], but we weren't a fan of relying on object key ordering, and defining parser types as strings. This parser does only cater to browsers that are able to utilise the `Uint8Array` data type, so if you need something more compatible, these other parsers might better fit your requirements.
 
 ### Demo
 
@@ -106,3 +104,4 @@ You can see a full demo **[here][2]** which uses this lib to parse GIF files for
 [1]: http://ruffle.us
 [2]: https://github.com/matt-way/gifuct-js
 [3]: http://unasigned.co
+[4]: https://github.com/jDataView/jBinary
