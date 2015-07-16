@@ -18,9 +18,9 @@
   "ignore": [
     "*",
     "!dist/",
-    "!dist/*",
+    "!dist/**/*",
     "!src/",
-    "!src/*",
+    "!src/**/*",
     "!README.md",
     "!LICENSE"
   ]
