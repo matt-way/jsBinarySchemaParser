@@ -1,27 +1,27 @@
 {
-	"name": "js-binary-schema-parser",
-	"version": "1.0.0",
-	"homepage": "https://github.com/matt-way/jsBinarySchemaParser",
-	"authors": [
-		"Matt Way <matt__way@hotmail.com>"
-	],
-	"main": "dist/js-binary-schema-parser.js",
-	"description": "Parse binary files in javascript using clean schema objects",
-	"keywords": [
-		"javascript",
-		"binary",
-		"file",
-		"parser",
-		"schema"
-	],
-	"license": "MIT",
-	"ignore": [
-		"*",
-		"!dist/",
-		"!dist/*",
-		"!src/",
-		"!src/*",
-		"!README.md",
-		"!LICENSE"
-	]
+  "name": "js-binary-schema-parser",
+  "version": "1.0.1",
+  "homepage": "https://github.com/matt-way/jsBinarySchemaParser",
+  "authors": [
+    "Matt Way <matt__way@hotmail.com>"
+  ],
+  "main": "dist/js-binary-schema-parser.js",
+  "description": "Parse binary files in javascript using clean schema objects",
+  "keywords": [
+    "javascript",
+    "binary",
+    "file",
+    "parser",
+    "schema"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "*",
+    "!dist/",
+    "!dist/*",
+    "!src/",
+    "!src/*",
+    "!README.md",
+    "!LICENSE"
+  ]
 }
