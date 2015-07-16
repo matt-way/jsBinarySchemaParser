@@ -5,6 +5,7 @@
 	"authors": [
 		"Matt Way <matt__way@hotmail.com>"
 	],
+	"main": "dist/js-binary-schema-parser.js",
 	"description": "Parse binary files in javascript using clean schema objects",
 	"keywords": [
 		"javascript",
@@ -15,10 +16,9 @@
 	],
 	"license": "MIT",
 	"ignore": [
-		"**/.*",
-		"node_modules",
-		"bower_components",
-		"test",
-		"tests"
+		"*",
+		"!dist/",
+		"!README.md",
+		"!LICENSE"
 	]
 }

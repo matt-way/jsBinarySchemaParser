@@ -37,6 +37,6 @@ var Parsers = {
 			return arr;
 		};
 	}
-};
+};A
 
 module.exports = Parsers;
