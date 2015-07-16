@@ -103,5 +103,5 @@ You can see a full demo **[here][2]** which uses this lib to parse GIF files for
 
 [1]: http://ruffle.us
 [2]: https://github.com/matt-way/gifuct-js
-[3]: http://unasigned.co
+[3]: http://unassigned.co
 [4]: https://github.com/jDataView/jBinary
