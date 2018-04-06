@@ -18,20 +18,12 @@ ByteStream.prototype.peekByte = function(){
 
 // read an array of bytes
 ByteStream.prototype.readBytes = function(n){
-	var bytes = new Array(n);
-	for(var i=0; i<n; i++){
-		bytes[i] = this.readByte();
-	}
-	return bytes;
+	return this.data.subarray(this.pos, this.pos += n);
 };
 
 // peek at an array of bytes without updating the stream position
 ByteStream.prototype.peekBytes = function(n){
-	var bytes = new Array(n);
-	for(var i=0; i<n; i++){
-		bytes[i] = this.data[this.pos + i];
-	}
-	return bytes;
+	return this.data.subarray(this.pos, this.pos + n);
 };
 
 // read a string from a byte set
