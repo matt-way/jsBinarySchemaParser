@@ -9,9 +9,10 @@
     "@babel/node": "^7.8.4",
     "@babel/preset-env": "^7.8.4"
   },
+  "main": "lib/index.js",
   "scripts": {
     "example": "babel-node ./example/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "babel src --out-dir lib"
   },
   "repository": {
     "type": "git",
