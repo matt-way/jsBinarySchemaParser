@@ -12,6 +12,7 @@
   "main": "lib/index.js",
   "scripts": {
     "example": "babel-node ./example/index.js",
+    "example-debug": "babel-node --inspect-brk ./example/index.js",
     "build": "babel src --out-dir lib"
   },
   "repository": {

@@ -1,4 +1,4 @@
-import { conditional, loop } from '../src'
+import { conditional, loop } from '../'
 import {
   readByte,
   peekByte,
@@ -8,7 +8,7 @@ import {
   readUnsigned,
   readArray,
   readBits
-} from '../src/parser.uint8'
+} from '../parsers/uint8'
 
 // a set of 0x00 terminated subblocks
 var subBlocksSchema = {

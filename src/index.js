@@ -1,33 +1,28 @@
-import * as Uint8Parser from './parser.uint8.js'
-
 export const parse = (stream, schema, result = {}, parent = result) => {
-  schema.forEach(partSchema => parsePart(stream, partSchema, result, parent))
-}
-
-const parsePart = (stream, schema, result, parent) => {
-  if (typeof schema === 'function') {
-    return schema(stream, result, parent, parsePart)
-  }
-
-  const key = Object.keys(schema)[0]
-  if (Array.isArray(schema[key])) {
-    parent[key] = {}
-    parse(stream, schema[key], result, parent[key])
-  } else if (typeof schema[key] === 'function') {
-    schema[key](stream, result, parent, key, parsePart)
+  if (Array.isArray(schema)) {
+    schema.forEach(partSchema => parse(stream, partSchema, result, parent))
+  } else if (typeof schema === 'function') {
+    schema(stream, result, parent, parse)
   } else {
-    parent[key] = schema[key](stream, result, parent)
+    const key = Object.keys(schema)[0]
+    if (Array.isArray(schema[key])) {
+      parent[key] = {}
+      parse(stream, schema[key], result, parent[key])
+    } else {
+      parent[key] = schema[key](stream, result, parent, parse)
+    }
   }
+  return result
 }
 
 export const conditional = (schema, conditionFunc) => (
   stream,
   result,
   parent,
-  parsePart
+  parse
 ) => {
   if (conditionFunc(stream, result, parent)) {
-    parsePart(stream, schema, result, parent)
+    parse(stream, schema, result, parent)
   }
 }
 
@@ -35,15 +30,13 @@ export const loop = (schema, continueFunc) => (
   stream,
   result,
   parent,
-  key,
-  parsePart
+  parse
 ) => {
-  parent[key] = []
+  const arr = []
   while (continueFunc(stream, result, parent)) {
     const newParent = {}
-    parsePart(stream, schema, result, newParent)
-    result[key].push(newParent)
+    parse(stream, schema, result, newParent)
+    arr.push(newParent)
   }
+  return arr
 }
-
-export { Uint8Parser }
