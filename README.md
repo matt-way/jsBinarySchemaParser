@@ -10,7 +10,7 @@ Basically, you provide a schema object and some data, and it will step through t
 
 _Installation:_
 
-    npm install --save js-binary-schema-parser
+    npm install js-binary-schema-parser
 
 _Create a schema and parse a file:_
 
