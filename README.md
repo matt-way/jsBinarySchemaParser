@@ -15,7 +15,7 @@ _Installation:_
 _Create a schema and parse a file:_
 
     import { parse, conditional } from 'js-binary-schema-parser'
-    import { buildStream, readByte } from 'js-binary-schema-parser/parsers/uint8'
+    import { buildStream, readByte } from 'js-binary-schema-parser/lib/parsers/uint8'
 
     const schema = [
       // part definitions...
@@ -31,7 +31,7 @@ _Create a schema and parse a file:_
 
 So far in this library there is only one built in schema, which is for the GIF format. You can import included schemas like:
 
-    import GIF from 'js-binary-schema-parser/schemas/gif'
+    import GIF from 'js-binary-schema-parser/lib/schemas/gif'
 
 Schemas are an array of _parts_, which are objects containing a single key label, and the parser to use at that point in time. This format was chosen to ensure parse ordering was consistent. _Parts_ can also contain other parts internally, and include syntax for loops, and conditionals. You can also include your own custom functions for parsing, providing direct access to the given data stream. Below is an example of a schema using the `Uint8TypedArray` parser provided to parse the GIF format header. You can also see a full example [here][2] of parsing entire GIF files.
 
