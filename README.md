@@ -73,8 +73,11 @@ You can see a full demo **[here][2]** which uses this lib to parse GIF files for
 
 [Matt Way][3] & [Nick Drewe][5]
 
+[Wethrift.com][6]
+
 [1]: https://www.producthunt.com/posts/ruffle
 [2]: https://github.com/matt-way/gifuct-js
 [3]: https://twitter.com/_MattWay
 [4]: https://github.com/jDataView/jBinary
 [5]: https://twitter.com/nickdrewe
+[6]: https://wethrift.com
