@@ -7,20 +7,28 @@ import {
   readString,
   readUnsigned,
   readArray,
-  readBits
+  readBits,
 } from '../parsers/uint8'
 
 // a set of 0x00 terminated subblocks
 var subBlocksSchema = {
-  blocks: stream => {
+  blocks: (stream) => {
     const terminator = 0x00
     const chunks = []
+    const streamSize = stream.data.length
     var total = 0
     for (
       var size = readByte()(stream);
       size !== terminator;
       size = readByte()(stream)
     ) {
+      // catch corrupted files with no terminator
+      if (stream.pos + size >= streamSize) {
+        const availableSize = streamSize - stream.pos
+        chunks.push(readBytes(availableSize)(stream))
+        total += availableSize
+        break
+      }
       chunks.push(readBytes(size)(stream))
       total += size
     }
@@ -31,7 +39,7 @@ var subBlocksSchema = {
       offset += chunks[i].length
     }
     return result
-  }
+  },
 }
 
 // global control extension
@@ -45,15 +53,15 @@ const gceSchema = conditional(
           future: { index: 0, length: 3 },
           disposal: { index: 3, length: 3 },
           userInput: { index: 6 },
-          transparentColorGiven: { index: 7 }
-        })
+          transparentColorGiven: { index: 7 },
+        }),
       },
       { delay: readUnsigned(true) },
       { transparentColorIndex: readByte() },
-      { terminator: readByte() }
-    ]
+      { terminator: readByte() },
+    ],
   },
-  stream => {
+  (stream) => {
     var codes = peekBytes(2)(stream)
     return codes[0] === 0x21 && codes[1] === 0xf9
   }
@@ -76,25 +84,25 @@ const imageSchema = conditional(
               interlaced: { index: 1 },
               sort: { index: 2 },
               future: { index: 3, length: 2 },
-              size: { index: 5, length: 3 }
-            })
-          }
-        ]
+              size: { index: 5, length: 3 },
+            }),
+          },
+        ],
       },
       conditional(
         {
           lct: readArray(3, (stream, result, parent) => {
             return Math.pow(2, parent.descriptor.lct.size + 1)
-          })
+          }),
         },
         (stream, result, parent) => {
           return parent.descriptor.lct.exists
         }
       ),
-      { data: [{ minCodeSize: readByte() }, subBlocksSchema] }
-    ]
+      { data: [{ minCodeSize: readByte() }, subBlocksSchema] },
+    ],
   },
-  stream => {
+  (stream) => {
     return peekByte()(stream) === 0x2c
   }
 )
@@ -107,12 +115,12 @@ const textSchema = conditional(
       { blockSize: readByte() },
       {
         preData: (stream, result, parent) =>
-          readBytes(parent.text.blockSize)(stream)
+          readBytes(parent.text.blockSize)(stream),
       },
-      subBlocksSchema
-    ]
+      subBlocksSchema,
+    ],
   },
-  stream => {
+  (stream) => {
     var codes = peekBytes(2)(stream)
     return codes[0] === 0x21 && codes[1] === 0x01
   }
@@ -125,10 +133,10 @@ const applicationSchema = conditional(
       { codes: readBytes(2) },
       { blockSize: readByte() },
       { id: (stream, result, parent) => readString(parent.blockSize)(stream) },
-      subBlocksSchema
-    ]
+      subBlocksSchema,
+    ],
   },
-  stream => {
+  (stream) => {
     var codes = peekBytes(2)(stream)
     return codes[0] === 0x21 && codes[1] === 0xff
   }
@@ -137,9 +145,9 @@ const applicationSchema = conditional(
 // comment block
 const commentSchema = conditional(
   {
-    comment: [{ codes: readBytes(2) }, subBlocksSchema]
+    comment: [{ codes: readBytes(2) }, subBlocksSchema],
   },
-  stream => {
+  (stream) => {
     var codes = peekBytes(2)(stream)
     return codes[0] === 0x21 && codes[1] === 0xfe
   }
@@ -156,18 +164,18 @@ const schema = [
           exists: { index: 0 },
           resolution: { index: 1, length: 3 },
           sort: { index: 4 },
-          size: { index: 5, length: 3 }
-        })
+          size: { index: 5, length: 3 },
+        }),
       },
       { backgroundColorIndex: readByte() },
-      { pixelAspectRatio: readByte() }
-    ]
+      { pixelAspectRatio: readByte() },
+    ],
   },
   conditional(
     {
       gct: readArray(3, (stream, result) =>
         Math.pow(2, result.lsd.gct.size + 1)
-      )
+      ),
     },
     (stream, result) => result.lsd.gct.exists
   ),
@@ -175,7 +183,7 @@ const schema = [
   {
     frames: loop(
       [gceSchema, applicationSchema, commentSchema, imageSchema, textSchema],
-      stream => {
+      (stream) => {
         var nextCode = peekByte()(stream)
         // rather than check for a terminator, we should check for the existence
         // of an ext or image block to avoid infinite loops
@@ -183,8 +191,8 @@ const schema = [
         //return nextCode !== terminator;
         return nextCode === 0x21 || nextCode === 0x2c
       }
-    )
-  }
+    ),
+  },
 ]
 
 export default schema
