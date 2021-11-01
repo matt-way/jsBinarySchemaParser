@@ -33,12 +33,16 @@ export const loop = (schema, continueFunc) => (
   parse
 ) => {
   const arr = []
+  let lastStreamPos = stream.pos;
   while (continueFunc(stream, result, parent)) {
     const newParent = {}
     parse(stream, schema, result, newParent)
     // cases when whole file is parsed but no termination is there and stream position is not getting updated as well
     // it falls into infinite recursion, null check to avoid the same
-    if(Object.keys(newParent).length === 0) break;
+    if(stream.pos === lastStreamPos) {
+      break
+    }
+    lastStreamPos = stream.pos
     arr.push(newParent)
   }
   return arr
