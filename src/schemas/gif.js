@@ -22,6 +22,9 @@ var subBlocksSchema = {
       size !== terminator;
       size = readByte()(stream)
     ) {
+      // size becomes undefined for some case when file is corrupted and  terminator is not proper 
+      // null check to avoid recursion
+      if(!size) break;
       // catch corrupted files with no terminator
       if (stream.pos + size >= streamSize) {
         const availableSize = streamSize - stream.pos
